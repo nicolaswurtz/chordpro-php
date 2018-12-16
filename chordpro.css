@@ -1,0 +1,22 @@
+.chordpro-verse {
+  height: 2.5em;
+}
+.chordpro-chorus {
+  padding-left: 10px;
+  border-left: 2px solid #777;
+}
+.chordpro-elem {
+  position: relative;
+  display: inline-block;
+}
+.chordpro-chord {
+  position: relative;
+  display: block;
+  padding-right: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+.chordpro-text {
+  position: relative;
+  display: block;
+}
