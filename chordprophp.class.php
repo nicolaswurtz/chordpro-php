@@ -7,13 +7,52 @@ namespace chordprophp;
  */
 class chordpro
 {
+  private $_chordpro; // Source
   private $_html; // HTML output
   private $_text; // Plain text output
+  private $_transpose; // Positive or negative numeric value for transposing
+
+  private $_dieze = '&#9839;'; // ♯
+  private $_bemol = '&#9837;'; // ♭
+
+  private $_french_chords = array(
+    'A' => 'La',
+    'B' => 'Si',
+    'C' => 'Do',
+    'D' => 'Ré',
+    'E' => 'Mi',
+    'F' => 'Fa',
+    'G' => 'Sol'
+  );
+
+  private $_simple_transpose = array(
+    'C'   => 0,
+    'C#'  => 1,
+    'Db'  => 1,
+    'D'   => 2,
+    'Eb'  => 3,
+    'D#'  => 3,
+    'E'   => 4,
+    'F'   => 5,
+    'F#'  => 6,
+    'Gb'  => 6,
+    'G'   => 7,
+    'Ab'  => 8,
+    'G#'  => 8,
+    'A'   => 9,
+    'Bb'  => 10,
+    'A#'  => 10,
+    'B'   => 11,
+  );
 
   function __construct($chordpro)
   {
-    $chordpro = str_replace("\r\n","\n",$chordpro);
-    foreach (explode("\n",$chordpro) as $line) {
+    $this->_chordpro = str_replace("\r\n","\n",$chordpro);
+  }
+
+  private function parser()
+  {
+    foreach (explode("\n",$this->_chordpro) as $line) {
       $line = trim($line);
       switch (substr($line,0,1)) {
         case "{":
@@ -29,9 +68,28 @@ class chordpro
     }
   }
 
-  private function transpose($chord)
+  private function format_chord($chords)
   {
-    return $chord;
+    $chords = explode('/',$chords);
+    foreach ($chords as $chord) {
+      $pos = (in_array(substr($chord,1,1),['b','#'])) ? 2 : 1;
+      $chord = [substr($chord,0,$pos),substr($chord,$pos)];
+
+      if (!empty($this->_transpose) and $this->_transpose < 12 and $this->_transpose > -12) {
+        $key = $this->_simple_transpose[$chord[0]];
+        $new_key = ($key + $this->_transpose < 0) ? 12 + ($key + $this->_transpose) : ($key + $this->_transpose) % 12;
+        $chord[0] = array_search($new_key,$this->_simple_transpose);
+      }
+
+      if ($this->_french === true) {
+        $chord[0] = $this->_french_chords[substr($chord[0],0,1)].substr($chord[0],1);
+      }
+
+      $chord[0] = str_replace(['#','b'],[$this->_dieze,$this->_bemol],$chord[0]);
+
+      $formatted[] = implode($chord);
+    }
+    return implode('/',$formatted);
   }
 
   private function blank_chars($text)
@@ -54,15 +112,18 @@ class chordpro
           $text = $this->blank_chars($block[0]);
         }
         else if (substr($block[1],0,1) == " ") {
-          $chord = $this->transpose($block[0]);
+          $chord = $this->format_chord($block[0]);
           $content .= '<span class="chordpro-elem"><span class="chordpro-chord">'.$chord.'</span><span class="chordpro-text">&nbsp;</span></span>';
           $chord = '';
           $text = $this->blank_chars($block[1]);
         }
         else {
-          $chord = $this->transpose($block[0]);
+          $chord = $this->format_chord($block[0]);
           $text = $this->blank_chars($block[1]);
         }
+
+        if (empty($text))
+          $text = "&nbsp;";
 
         $content .= '<span class="chordpro-elem">
           <span class="chordpro-chord">'.$chord.'</span>
@@ -109,12 +170,20 @@ class chordpro
         $this->_html[] = '<div>'.$type.' | '.$content.'</div>';
         break;
     }
+  }
 
+  public function options($options)
+  {
+    if (isset($options['transpose']) and is_numeric($options['transpose']))
+      $this->_transpose = $options['transpose'];
 
+    if (isset($options['french']) and $options['french'] === true)
+      $this->_french = true;
   }
 
   public function getHtml()
   {
+    $this->parser();
     return implode($this->_html);
   }
 }

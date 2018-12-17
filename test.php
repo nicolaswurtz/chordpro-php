@@ -1,42 +1,60 @@
 <?php
 
-$txt = '{t:Sola Gratia (Ta grâce seule)}
-{st:Sébastien Corn – David Morin}
-{c:© 2013 Productions ENV Media}
-{c:shir.fr 25/12/15 – IMP1303}
-{key:C#m}
-[C#m][A][E][G#m]
+$txt = '{t:Ta bannière}
+{st:Samuel Olivier}
+{c:© 2011 Samuel Olivier}
+{c:shir.fr 25/12/15 – ENC1109}
+{key:C}
+[C] Éternel trois fois saint,[Dm] l’étoile du matin,
+[F] Seigneur de l’univers,[C] aveuglante lumière,
+[C] Personne n’est comme toi,[Dm] parfaites sont tes voies,
+[F] Dieu souverain et fort,[C] plus puissant que la mort.
 
-[C#m][A][E][G#m]
-[C#m] Amour p[A]arfait, tu t’es d[E]onné à la cr[G#m]oix pour tout effac[C#m]er.
- De mes p[A]échés tu t’es ch[E]argé sur le b[B]ois.
+[Am] Et quand j’en prends conscience,[Em] ta divine évidence
+[F] S’impose à mon esprit ;[G] ta grâce me suffit.
+[Am] Malgré mes idées noires,[Em] ma vie sous ton regard,
+[F] Dieu, tu trouves en moi ton plaisir.
 
 {soc}
-C’est par [A]ta grâce, ta grâce [C#m]seule que je suis par[B]donné.
-C’est par [A]ta grâce, ta grâce [C#m]seule que tu m’as ra[B]cheté.
-
-O[A]h,[E] [B]merci pour la croix, ton [F#m]amour pour moi.
-O[A]h,[E] ta [C#m]grâce ne faillit p[B]as.
+[C] Seigneur, ta bannière s[G]ur moi, c’est l’amo[F]ur, c’est ton amo[C]ur. (× 2)
 {eoc}
 
-[C#m][A][E][G#m]
-[C#m] Rien ne p[A]ourrait me just[E]ifier, ton pard[G#m]on est immérit[C#m]é.
- Tous mes e[A]fforts ne suff[E]iraient à me sauv[B]er.
+[C] Éternel trois fois saint,[Dm] l’étoile du matin,
+[F] Seigneur de l’univers,[C] aveuglante lumière,
+[C] Personne n’est comme toi,[Dm] parfaites sont tes voies,
+[F] Tu consoles et restaures,[C] tu soignes et tu rends fort.
+
+[Am] Et quand j’en prends conscience,[Em] ta divine évidence
+[F] S’impose à mon esprit ;[G] ô Dieu, tu me suffis.
+[Am] Ma vie sous ton regard,[Em] qu’elle chante ton histoire.
+[F] Père, je trouve en toi mes délices.
+
+{soc}
+[C] Seigneur, ta bannière s[G]ur moi, c’est l’amo[F]ur, c’est ton amo[C]ur. (× 2)
+[Am] Tu me couronnes de t[G/B]a joie, c’est l’amo[Dm]ur, c’est ton amo[C]ur.
+[C] Seigneur, ta bannière s[G]ur moi, c’est l’amo[F]ur, c’est ton amo[C]ur.
+{eoc}
 
 {c:Pont}
-[A] Ta grâce justifie,[E] ta grâce m’affranchit,
-[B] Ta grâce purifie,[F#m] ta grâce m’offre la vie.
-[A] Ta grâce m’a sauvé,[E] ta grâce a pardonné,
-[B] Ta grâce m’a comblé,[F#m] ta grâce m’a libéré.
-(× 3)[C#m]
+[C] J’élève ta bannière,[Dm] j’élève ta bannière,
+[F] J’élève ta bannière sur m[C]oi.
+[C] Quand je suis perdu,[Dm] quand je n’y vois plus,
+[F] J’élève ta bannière sur m[C]oi.
+(× 2)
 
-{c:Final}
-[C#m]';
+[Am] J’élève ta bannière,[Em] j’élève ta bannière,
+[F] J’élève ta bannière sur m[C]oi.
+[Am] Quand je suis perdu,[Em] quand je n’y vois plus,
+[F] J’élève ta bannière sur m[C]oi.
+(× 2)';
 
 require __dir__ . '/chordprophp.class.php';
 use chordprophp\chordpro;
 $chordpro = new chordpro($txt);
-
+$chordpro->options(array(
+  'transpose' => -2,
+  'french' => true
+));
 ?>
 
 <!DOCTYPE html>
