@@ -16,6 +16,16 @@ class Block {
         'G' => 'Sol'
     );
 
+    private function englishNotation($chord)
+    {
+        if (in_array(substr(strtolower($chord),0,2),['la','si','do','ré','re','mi','fa','so'])) {
+            return str_replace(['la','si','do','ré','re','mi','fa','sol'],['A','B','C','D','D','E','F','G'],strtolower($chord));
+        }
+        else {
+            return $chord;
+        }
+    }
+
     public function __construct($chord,$text)
     {
         $this->chord = $chord;
@@ -29,11 +39,11 @@ class Block {
         foreach ($chords as $chord) {
             $result[] = $this->french_chords[substr($chord,0,1)].substr($chord,1);
         }
-        return implode('/',$result);
+        return $this->englishNotation(implode('/',$result));
     }
     public function getChord()
     {
-        return $this->chord;
+        return $this->englishNotation($this->chord);
     }
     public function getText()
     {

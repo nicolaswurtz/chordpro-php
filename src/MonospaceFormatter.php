@@ -69,11 +69,11 @@ class MonospaceFormatter implements FormatterInterface {
             $chord = (true === $this->french_chords) ? $block->getFrenchChord().' ' : $block->getChord().' ';
             $text = $block->getText();
 
-            if (strlen($text) < strlen($chord)) {
-                $text = $text.$this->genBlank(strlen($chord) - strlen($text));
+            if (mb_strlen($text) < mb_strlen($chord)) {
+                $text = $text.$this->genBlank(mb_strlen($chord) - mb_strlen($text));
             }
 
-            $chords .= $chord.$this->genBlank(strlen($text) - strlen($chord));
+            $chords .= $chord.$this->genBlank(mb_strlen($text) - mb_strlen($chord));
             $texts .= $text;
         }
         return $chords."\n".$texts."\n";
