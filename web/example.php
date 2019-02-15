@@ -42,7 +42,7 @@ $json = new ChordPro\JSONFormatter();
 
 $song = $parser->parse($txt);
 $transposer = new ChordPro\Transposer();
-$transposer->transpose($song,-5);
+$transposer->transpose($song,-2);
 
 $options = []; //array('french' => true);
 $txt_html = $html->format($song,$options);

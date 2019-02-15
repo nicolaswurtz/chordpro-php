@@ -4,8 +4,9 @@ namespace ChordPro;
 
 class HtmlFormatter implements FormatterInterface {
 
-    private $diezeHTML = '&#9839;'; // ♯
-    private $bemolHTML = '&#9837;'; // ♭
+    private $sharp_symbol = '&#9839;'; // ♯
+    private $natural_symbol = '&#9838;'; // ♮
+    private $flat_symbol = '&#9837;'; // ♭
     private $french_chords;
 
     public function format(Song $song, array $options): string
@@ -82,7 +83,7 @@ class HtmlFormatter implements FormatterInterface {
             }
             $chord = implode('/',$chords);
 
-            $chord = $this->blankChars(str_replace(['#','b'],[$this->diezeHTML,$this->bemolHTML],$chord));
+            $chord = $this->blankChars(str_replace(['#','b','K'],[$this->sharp_symbol,$this->flat_symbol,$this->natural_symbol],$chord));
             $text = $this->blankChars($block->getText());
 
             $verse .= '<span class="chordpro-elem">
