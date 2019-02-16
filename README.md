@@ -39,12 +39,13 @@ $json_formatter = new ChordPro\JSONFormatter();
 // Create song object after parsing txt
 $song = $parser->parse($txt);
 
-// You can tranpose your song, put how many semitones you want to transpose in second argument
+// You can tranpose your song, put how many semitones you want to transpose in second argument OR desired key (only if metadata "key" is defined)
 $transposer = new ChordPro\Transposer();
 $transposer->transpose($song,-5);
+//$transposer->transpose($song,'Abm');
 
 // Some options are waited
-$options = []; //array('french' => true);
+$options = []; //array('french' => true, 'no_chords' => true);
 
 // Render !
 $html = $html_formatter->format($song,$options);
@@ -52,4 +53,9 @@ $plaintext = $monospace_formatter->format($song,$options);
 $json = $json_formatter->format($song,$options);
 ```
 
-## CSS Class you can use with HTML Formatter
+## Methods
+### Song
+- getKey to obtain key of song, **with transposition**, you can alter langage english by default, or French `$song->getKey(['french' => true]);`
+- getOriginalKey to obtain key of song, as defined in metadata's field "key"
+
+## CSS Classes you can use with HTML Formatter

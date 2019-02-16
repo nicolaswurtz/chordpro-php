@@ -91,26 +91,31 @@ class Transposer
         ['G#','GX','A','A#','AX','B','B#','BX','C#','CX','D','D#','DX','E','E#','EX','F#','FX']
     ];
 
-    public function transpose(Song $song, int $value)
+    public function transpose(Song $song, string $value)
     {
         foreach ($song->lines as $line) {
             if ($line instanceof Lyrics) {
                 foreach ($line->getBlocks() as $block) {
                     if (null !== $block->getChord()) {
-                        $block->setChord($this->simple_transpose($block->getChord(),$value));
-                        //$block->setChord($this->complete_transpose($block->getChord(),$song->getKey(),'Bbm'));
+                        if (is_numeric($value)) {
+                            $block->setChord($this->simple_transpose($block->getChord(),$value));
+                        }
+                        else {
+                            $block->setChord($this->complete_transpose($block->getChord(),$song->getOriginalKey(),$value));
+                            $song->setKey($value);
+                        }
                     }
                 }
             }
         }
     }
 
-    private function simple_transpose(string $chords, int $value)
+    private function simple_transpose(array $chords, int $value)
     {
-        $chords = explode('/',$chords); // if chord with another fundamental note eg. G/B
         foreach ($chords as $chord) {
-            $pos = (in_array(substr($chord,1,1),['b','#'])) ? 2 : 1;
-            $chord = [substr($chord,0,$pos),substr($chord,$pos)];
+            if (in_array(substr($chord[1],0,1),['b','#','X','K'])) {
+                $chord = [$chord[0].substr($chord[1],0,1),substr($chord[1],1)];
+            }
 
             if (!empty($value) and $value < 12 and $value > -12) {
                 $key = $this->simple_transpose_table[$chord[0]];
@@ -118,23 +123,23 @@ class Transposer
                 $chord[0] = array_search($new_key,$this->simple_transpose_table);
             }
 
-            $formatted[] = implode($chord);
+            $transposed[] = implode($chord);
         }
-        return implode('/',$formatted);
+        return implode('/',$transposed);
     }
 
-    private function complete_transpose(string $chords, string $from_key, string $to_key)
+    private function complete_transpose(array $chords, string $from_key, string $to_key)
     {
-        $chords = explode('/',$chords); // if chord with another fundamental note eg. G/B
         foreach ($chords as $chord) {
-            $pos = (in_array(substr($chord,1,1),['b','#'])) ? 2 : 1;
-            $chord = [substr($chord,0,$pos),substr($chord,$pos)];
+            if (in_array(substr($chord[1],0,1),['b','#','X','K'])) {
+                $chord = [$chord[0].substr($chord[1],0,1),substr($chord[1],1)];
+            }
 
             $rank = array_search($chord[0],$this->transpose_table[$this->transpose_chords[$from_key]]);
             $chord[0] = $this->transpose_table[$this->transpose_chords[$to_key]][$rank];
 
-            $formatted[] = implode($chord);
+            $transposed[] = implode($chord);
         }
-        return implode('/',$formatted);
+        return implode('/',$transposed);
     }
 }

@@ -2,15 +2,12 @@
 
 namespace ChordPro;
 
-class JSONFormatter implements FormatterInterface {
-
-    private $french_chords;
+class JSONFormatter extends Formatter implements FormatterInterface {
 
     public function format(Song $song, array $options): string
     {
-        if (isset($options['french']) and true === $options['french']) {
-            $this->french_chords = true;
-        }
+        $this->setOptions($song,$options);
+
         foreach ($song->lines as $line) {
             if (null === $line) {
                 $json[] = null;
@@ -30,20 +27,39 @@ class JSONFormatter implements FormatterInterface {
         }
 
         if ($line instanceof Lyrics) {
-            return $this->getLyricsJSON($line);
+            return (true === $this->no_chords) ? $this->getLyricsOnlyJSON($line) : $this->getLyricsJSON($line);
         }
     }
 
     private function getMetadataJSON($metadata)
     {
-        return (empty($metadata->getValue()) ? [$metadata->getName()] : [$metadata->getName() => $metadata->getValue()]);
+        if (empty($metadata->getValue())) {
+            return [$metadata->getName()];
+        }
+        else {
+            switch($metadata->getName()) {
+                default:
+                    return [$metadata->getName() => $metadata->getValue()];
+                    break;
+            }
+        }
     }
     private function getLyricsJSON($lyrics)
     {
         foreach ($lyrics->getBlocks() as $block) {
-            $chord = (true === $this->french_chords) ? $block->getFrenchChord().' ' : $block->getChord().' ';
+            $chord = (true === $this->french_chords) ? $block->getFrenchChord() : $block->getChord();
+            // Implode all !
+            $chord = implode('/',array_map("implode",$chord)).' ';
+
             $text = $block->getText();
             $return[] = array('chord' => trim($chord), 'text' => $text);
+        }
+        return $return;
+    }
+    private function getLyricsOnlyJSON($lyrics)
+    {
+        foreach ($lyrics->getBlocks() as $block) {
+            $return .= ltrim($block->getText());
         }
         return $return;
     }

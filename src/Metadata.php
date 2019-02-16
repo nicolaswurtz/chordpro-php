@@ -20,6 +20,10 @@ class Metadata extends Line {
     {
         return $this->value;
     }
+    public function setValue(string $value)
+    {
+        $this->value = $value;
+    }
 
     private function setName($name)
     {

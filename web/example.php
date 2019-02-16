@@ -5,7 +5,7 @@ $txt = "{t:Tu es venu jusqu’à nous}
 {c:From Heaven You Came © 1983 Make Way Music / Kingsway Thankyou Music / LTC}
 {c:shir.fr 25/12/15 – JEM553}
 {key:Cm}
-[Cm]Tu es ve[G/B]nu jusqu’à [AbM7]nous,
+[Cm] Tu es ve[G/B]nu jusqu’à [AbM7]nous,
 [Bb/Ab]Quittant la [Eb/G]gloire [Ab/C]de [Eb/Bb]ton [Bb]ciel.
 [Cm]Tu es ve[G/B]nu nous ser[AbM7]vir,
 [Bb/Ab]Donnant ta [Eb/G]vie pour [Ab/C]nous [Eb/Bb]sau[Bb]ver.
@@ -42,14 +42,14 @@ $json = new ChordPro\JSONFormatter();
 
 $song = $parser->parse($txt);
 $transposer = new ChordPro\Transposer();
-$transposer->transpose($song,-2);
+$transposer->transpose($song,'Dm');
 
-$options = []; //array('french' => true);
+$options = array('french' => true, 'no_chords' => false);
 $txt_html = $html->format($song,$options);
-//$txt = $monospace->format($song,$options);
-//$txt_json = $json->format($song,$options);
+$txt = $monospace->format($song,$options);
+$txt_json = $json->format($song,$options);
 
-//echo '<pre>'.$txt_json; exit;
+//echo '<pre>'.$txt; exit;
 
 ?>
 
@@ -66,6 +66,6 @@ $txt_html = $html->format($song,$options);
     <link rel="stylesheet" href="example.css" />
   </head>
   <body>
-    <?php echo $txt_html; ?>
+    <?php echo '<h2>'.$song->getKey(['french' => true]).'</h2>'.$txt_html; ?>
   </body>
 </html>

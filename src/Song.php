@@ -3,31 +3,43 @@
 namespace ChordPro;
 
 class Song extends \ArrayObject {
+
     private $key;
+    private $french_chords_list = array(
+        'A' => 'La',
+        'B' => 'Si',
+        'C' => 'Do',
+        'D' => 'Ré',
+        'E' => 'Mi',
+        'F' => 'Fa',
+        'G' => 'Sol'
+    );
 
     public function __construct($lines)
     {
         $this->lines = $lines;
-        $this->key = $this->searchKey($lines);
     }
 
-    public function getKey()
+    public function getOriginalKey()
     {
-        return $this->key;
-    }
-
-    public function setKey(string $key)
-    {
-        $this->key = $key;
-    }
-
-    // Get KEY at contruction of Song with metadata:key
-    private function searchKey($lines)
-    {
-        foreach ($lines as $line) {
+        foreach ($this->lines as $line) {
             if ($line instanceof Metadata and $line->getName() == 'key') {
                 return $line->getValue();
             }
         }
+    }
+    public function getKey($options)
+    {
+        $key = (empty($this->key)) ? $this->getOriginalKey() : $this->key;
+        return (isset($options['french']) and true === $options['french']) ? $this->toFrench($key) : $key;
+    }
+    public function setKey($value)
+    {
+        $this->key = $value;
+    }
+
+    private function toFrench($key)
+    {
+        return (null !== $key) ? $this->french_chords_list[substr($key,0,1)].substr($key,1) : $key;
     }
 }

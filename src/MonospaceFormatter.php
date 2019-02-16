@@ -2,15 +2,11 @@
 
 namespace ChordPro;
 
-class MonospaceFormatter implements FormatterInterface {
-
-    private $french_chords;
+class MonospaceFormatter extends Formatter implements FormatterInterface {
 
     public function format(Song $song, array $options): string
     {
-        if (isset($options['french']) and true === $options['french']) {
-            $this->french_chords = true;
-        }
+        $this->setOptions($song,$options);
 
         foreach ($song->lines as $line) {
             if (null === $line) {
@@ -30,7 +26,7 @@ class MonospaceFormatter implements FormatterInterface {
         }
 
         if ($line instanceof Lyrics) {
-            return $this->getLyricsMonospace($line);
+            return (true === $this->no_chords) ? $this->getLyricsOnlyMonospace($line) : $this->getLyricsMonospace($line);
         }
     }
 
@@ -65,8 +61,10 @@ class MonospaceFormatter implements FormatterInterface {
     private function getLyricsMonospace(Lyrics $lyrics)
     {
         foreach ($lyrics->getBlocks() as $block) {
+            $chord = (true === $this->french_chords) ? $block->getFrenchChord() : $block->getChord();
+            // Implode all !
+            $chord = implode('/',array_map("implode",$chord)).' ';
 
-            $chord = (true === $this->french_chords) ? $block->getFrenchChord().' ' : $block->getChord().' ';
             $text = $block->getText();
 
             if (mb_strlen($text) < mb_strlen($chord)) {
@@ -77,5 +75,13 @@ class MonospaceFormatter implements FormatterInterface {
             $texts .= $text;
         }
         return $chords."\n".$texts."\n";
+    }
+
+    private function getLyricsOnlyMonospace(Lyrics $lyrics)
+    {
+        foreach ($lyrics->getBlocks() as $block) {
+            $texts .= ltrim($block->getText());
+        }
+        return $texts."\n";
     }
 }
