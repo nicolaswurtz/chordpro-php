@@ -45,7 +45,7 @@ $transposer->transpose($song,-5);
 //$transposer->transpose($song,'Abm');
 
 // Some options are waited
-$options = []; //array('french' => true, 'no_chords' => true);
+$options = array('french' => true, 'no_chords' => true);
 
 // Render !
 $html = $html_formatter->format($song,$options);
@@ -55,8 +55,12 @@ $json = $json_formatter->format($song,$options);
 
 ## Formatting options
 Simply give an array with values at true or false for each key/option.
-- `french` to display french chords (Do, Ré, Mi, Fa, Sol, La, Si, Do), including Song Key.
-- `no_chords` to only get text (it removes "block" system for chords alignements)
+``` php
+array(
+    'french' => true, // to display french chords (Do, Ré, Mi, Fa, Sol, La, Si, Do), including Song Key.
+    'no_chords' => true // to only get text (it removes "block" system for chords alignements)
+);
+```
 
 ## Specific methods
 
@@ -70,7 +74,7 @@ Simply give an array with values at true or false for each key/option.
 _Verses_ are one line composed by blocks of text + chords, chord with class `chordpro-chord` and text with class `chordpro-text`.
 
 A typical `div` will be like this :
-```
+``` html
 <div class="chordpro-verse">
     <span class="chordpro-elem">
         <span class="chordpro-chord">C</span>
@@ -109,5 +113,8 @@ A typical `div` will be like this :
 The _chorus_ (`soc`,`start_of_chorus`) is encapsuled inside a `<div>` with class `chordpro-chorus`.
 
 ### Metadata
-By default, all _metadatas_ are placed inside a `<div>` with class `chordpro-metadataname`. For example, the _title_ will be
-```<div class="chordpro-title">It's a great title !</div>```
+By default, all _metadatas_ are placed inside a `<div>` with class `chordpro-metadataname`.
+For example, the _title_ will be
+``` html
+<div class="chordpro-title">It's a great title !</div>
+```

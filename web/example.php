@@ -1,36 +1,25 @@
 <?php
 
-$txt = "{t:Tu es venu jusqu’à nous}
-{st:Graham Kendrick}
-{c:From Heaven You Came © 1983 Make Way Music / Kingsway Thankyou Music / LTC}
-{c:shir.fr 25/12/15 – JEM553}
-{key:Cm}
-[Cm] Tu es ve[G/B]nu jusqu’à [AbM7]nous,
-[Bb/Ab]Quittant la [Eb/G]gloire [Ab/C]de [Eb/Bb]ton [Bb]ciel.
-[Cm]Tu es ve[G/B]nu nous ser[AbM7]vir,
-[Bb/Ab]Donnant ta [Eb/G]vie pour [Ab/C]nous [Eb/Bb]sau[Bb]ver.
+$txt = "{t:Nous t’adorons}
+{st:Corinne Lafitte}
+{c:© 1991 Corinne Lafitte}
+{c:shir.fr 25/12/15 – JEM463}
+{key:Dm}
+Nous t’ado[Dm]rons, ô [A/E]Père, dans ton [Dm/F]tem[D/F#]ple.
+Nous t’ado[Gm]rons en esprit [A7]et en véri[Dm]té.
+Tu ha[Bb]bites [C]nos lou[A/C#]an[Dm]ges,
+Nous t’ado[Gm]rons en esprit [A7]et en véri[Dm]té.
 
 {soc}
-Dieu tout puis[Eb]sant[Bb], roi servi[Cm]teur,[Cm/Bb]
-Tu nous ap[Ab]pelles tous [Bb]à te [Eb]sui[Bb]vre
-Et à t’of[Eb]frir nos [Eb/Db]corps en sacri[Ab/C]fice.[D]
-À toi l’hon[Eb]neur[Bb], roi servi[Eb]teur.
+Car [C/E]un [F]jour près de toi vaut [C]mieux que mille ail[A/C#]leurs,
+Je dé[Dm]sire habi[Bb]ter dans ton [A4]tem[A]ple.
+Car un [F]jour près de toi vaut [C]mieux que mille ail[A/C#]leurs,
+Je dé[Dm]sire habi[Bb]ter dans ta [A7]maison Sei[Dm]gneur.
 {eoc}
 
-[G7][Cm]Dans le jar[G/B]din de dou[AbM7]leur,
-[Bb/Ab]Où mon far[Eb/G]deau bri[Ab/C]sa [Eb/Bb]ton [Bb]cœur,
-[Cm]Tu dis à [G/B]Dieu, dans ta [AbM7]peine :
-[Bb/Ab]Ta volon[Eb/G]té et [Ab/C]non [Eb/Bb]la [Bb]mienne.
-
-[G7][Cm]Voyez ses [G/B]mains et ses [AbM7]pieds,
-[Bb/Ab]Pour nous, té[Eb/G]moins du [Ab/C]sa[Eb/Bb]cri[Bb]fice.
-[Cm]Les mains qui [G/B]tenaient la [AbM7]terre
-[Bb/Ab]Se livrent aux [Eb/G]clous de [Ab/C]la [Eb/Bb]co[Bb]lère.
-
-[G7][Cm]Apprenons [G/B]donc à ser[AbM7]vir
-[Bb/Ab]En laissant [Eb/G]Christ ré[Ab/C]gner [Eb/Bb]en [Bb]nous.
-[Cm]Car en ai[G/B]mant nos pro[AbM7]chains,
-[Bb/Ab]C’est Jésus-[Eb/G]Christ que [Ab/C]nous [Eb/Bb]ser[Bb]vons.
+{c:Final}
+Je dé[Bb]sire habi[Gm]ter dans ta [A7]maison, Sei[Dm]gneur,
+Je dé[Bb]sire habi[Gm]ter dans ta [A7]maison, Sei[Dm]gneur.
 ";
 
 require __dir__ . '/../vendor/autoload.php';
@@ -41,6 +30,10 @@ $monospace = new ChordPro\MonospaceFormatter();
 $json = new ChordPro\JSONFormatter();
 
 $song = $parser->parse($txt);
+
+$guess = new ChordPro\GuessKey();
+echo '<pre>'; print_r($guess->guessKey($song)); exit;
+
 $transposer = new ChordPro\Transposer();
 $transposer->transpose($song,'Dm');
 
@@ -48,6 +41,7 @@ $options = array('french' => true, 'no_chords' => false);
 $txt_html = $html->format($song,$options);
 $txt = $monospace->format($song,$options);
 $txt_json = $json->format($song,$options);
+
 
 //echo '<pre>'.$txt; exit;
 
