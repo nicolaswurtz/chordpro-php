@@ -1,6 +1,6 @@
-# chordproPHP
+# chordpro-php
 
-A simple tool to parse & format [ChordPro](https://www.chordpro.org) songs.
+A simple tool to parse, transpose & format [ChordPro](https://www.chordpro.org) songs with lyrics & chords.
 
 It currently supports the following output formats :
 - HTML (verses contain blocks with embricated `span` for alignement of chords with lyrics)
@@ -19,7 +19,7 @@ _I'm french, so there's probably a lot of mistakes, writing english is not alway
 Via composer :
 
 ``` bash
-$ composer require nicolaswurtz/chordprophp
+$ composer require nicolaswurtz/chordpro-php
 ```
 
 ## Usage
