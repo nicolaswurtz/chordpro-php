@@ -12,7 +12,7 @@ And provides some extra functionnalities :
 - Display french chords
 - Guess tonality key of a song
 
-_I'm french, so there's probably a lot of mistakes, writing english is not always easy — je fais ce que je peux hein :P_
+_I'm french, so there's probably a lot of mistakes, my english is not always accurate — je fais ce que je peux hein :P_
 
 ## Install
 
