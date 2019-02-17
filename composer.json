@@ -1,5 +1,5 @@
 {
-    "name": "nicolaswurtz/chordpro",
+    "name": "nicolaswurtz/chordproPHP",
     "description": "ChordPro parser & formatter",
     "type": "library",
     "require-dev": {
