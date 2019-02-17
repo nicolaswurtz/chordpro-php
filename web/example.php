@@ -28,7 +28,7 @@ $json = new ChordPro\JSONFormatter();
 $song = $parser->parse($txt);
 
 //$guess = new ChordPro\GuessKey();
-//echo '<pre>'; print_r($guess->guessKey($song)); exit;
+//$key = $guess->guessKey($song);
 
 $transposer = new ChordPro\Transposer();
 //$transposer->transpose($song,'Dm');
@@ -37,9 +37,6 @@ $options = array('french' => false, 'no_chords' => false);
 $txt_html = $html->format($song,$options);
 $txt = $monospace->format($song,$options);
 $txt_json = $json->format($song,$options);
-
-
-//echo '<pre>'.$txt; exit;
 
 ?>
 
@@ -54,6 +51,10 @@ $txt_json = $json->format($song,$options);
     <link rel="stylesheet" href="example.css" />
   </head>
   <body>
-    <?php echo $txt_html; ?>
+      <h1>HTML</h1>
+      <?php echo $txt_html; ?>
+      <h1>Plain text</h1>
+      <?php echo '<pre>'.$txt.'</pre>'; ?>
+      <h1>JSON</h1>
   </body>
 </html>
