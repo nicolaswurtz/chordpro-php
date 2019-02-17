@@ -10,7 +10,7 @@
             "ChordPro\\":"src/"
         }
     },
-    "license": "MIT",
+    "license": "GPL3",
     "authors": [
         {
             "name": "Nicolas Wurtz",

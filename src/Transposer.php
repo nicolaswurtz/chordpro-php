@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Two use cases :
+* Two use-cases :
 *
 * - knowing original key of song, it transposes with table to ensure musicaly matching chords
 * - without original key, simple mathematical transpose (with errors !)

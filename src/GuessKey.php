@@ -1,5 +1,14 @@
 <?php
 
+/*
+*
+* Try to guess the tonality key of a song, with the chords it contains.
+* It uses a table with major scales and chords frequently found inside those scales, and takes the most representated scale.
+* Finally, it tests between Major and minor relative key which one is the most found in chords.
+* A bit brutal, but works most of the time !
+*
+*/
+
 namespace ChordPro;
 
 class GuessKey {
@@ -93,7 +102,7 @@ class GuessKey {
             }
         }
         arsort($result);
-
-        return $result;
+        $result = array_keys($result);
+        return $result[0];
     }
 }

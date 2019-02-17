@@ -1,11 +1,13 @@
 # chordproPHP
 
-A simple tool to parse & format ChordPro songs.
+A simple tool to parse & format [ChordPro|https://www.chordpro.org/] songs.
 
 It currently supports the following output formats :
 - HTML (verses contain blocks with embricated `span` for alignement of chords with lyrics)
 - JSON (verses are array of arrays of chords and lyrics for alignement purpose)
 - Plain text (chords are aligned with monospace text thanks to whitespaces)
+
+_I'm french, so there's probably a lot of mistakes, writing english is not always easy — je fais ce que je peux hein :P_
 
 ## Install
 
@@ -17,17 +19,29 @@ $ composer require nicolaswurtz/chordprophp
 
 ## Usage
 
-_See example.php for demo._
+> See `web/example.php` for demo with CSS styling.
 
 ``` php
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
 
-$txt = "[C]This is the [Dm]beautiful song
-[F] I wroted in [G/B]Chordpro for[Am]mat [F/A]
-Let's ring dingle and dong
-It's easy to do that";
+$txt = "{t:ChordpropPHP Song}
+{st:Nicolas Wurtz}
+{c:GPL3 2019 Nicolas Wurtz}
+{key:C}
+[C]This is the [Dm]beautiful [Em]song
+I [Dm]wroted in [F/G]Chordpro for[C]mat [Dm/F]
+Let's singing a[C/E]long
+[Bb] It's ea[Dm]sy to do [F]that [C]
+
+{soc}
+[F] [G] [C]This is the refrain
+[F] [G] [C]We could sing it twice
+{eoc}
+
+{c:Final}
+[Em/D]This is the [Bb]end.";
 
 $parser = new ChordPro\Parser();
 
@@ -41,11 +55,14 @@ $song = $parser->parse($txt);
 
 // You can tranpose your song, put how many semitones you want to transpose in second argument OR desired key (only if metadata "key" is defined)
 $transposer = new ChordPro\Transposer();
-$transposer->transpose($song,-5);
+$transposer->transpose($song,-5); // Simple transpose, but could produce some musical errors (sharp instead of flat)
 //$transposer->transpose($song,'Abm');
 
 // Some options are waited
-$options = array('french' => true, 'no_chords' => true);
+$options = array(
+    'french' => true,
+    'no_chords' => true
+);
 
 // Render !
 $html = $html_formatter->format($song,$options);
@@ -85,36 +102,16 @@ A typical `div` will be like this :
         <span class="chordpro-text">beautiful song</span>
     </span>
 </div>
-<div class="chordpro-verse">
-    <span class="chordpro-elem">
-        <span class="chordpro-chord">F</span>
-        <span class="chordpro-text"></span>
-    </span>
-    <span class="chordpro-elem">
-        <span class="chordpro-chord"></span>
-        <span class="chordpro-text">I wroted in </span>
-    </span>
-    <span class="chordpro-elem">
-        <span class="chordpro-chord">G/B</span>
-        <span class="chordpro-text">Chordpro for</span>
-    </span>
-    <span class="chordpro-elem">
-        <span class="chordpro-chord">Am</span>
-        <span class="chordpro-text">mat </span>
-    </span>
-    <span class="chordpro-elem">
-        <span class="chordpro-chord">F/A</span>
-        <span class="chordpro-text"></span>
-    </span>
-</div>
 ```
 
 ### Chorus
-The _chorus_ (`soc`,`start_of_chorus`) is encapsuled inside a `<div>` with class `chordpro-chorus`.
+The _chorus_ (`soc`/`start_of_chorus`) is encapsuled inside ```<div class="chordpro-chorus"></div>```.
 
 ### Metadata
-By default, all _metadatas_ are placed inside a `<div>` with class `chordpro-metadataname`.
+By default, all _metadatas_ are placed inside ```<div class="chordpro-metadataname"></div>```.
 For example, the _title_ will be
 ``` html
 <div class="chordpro-title">It's a great title !</div>
 ```
+_ChordproPHP doesn't care about the metadata names, it just puts it after `chordpro-` :)_
+> Metatada's names are always converted to their long form (`c` will be recorded as `comment`) when using short names from [official directives|https://www.chordpro.org/chordpro/ChordPro-Directives.html]
