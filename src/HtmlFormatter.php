@@ -12,6 +12,7 @@ class HtmlFormatter extends Formatter implements FormatterInterface {
     {
         $this->setOptions($song,$options);
 
+        $html = '';
         foreach ($song->lines as $line) {
             if (null === $line) {
                 $html .= '<br />';
@@ -46,7 +47,8 @@ class HtmlFormatter extends Formatter implements FormatterInterface {
     {
         switch($metadata->getName()) {
             case 'start_of_chorus':
-                $content = (null !== $metadata->getValue()) ? '<div class="chordpro-chorus-comment">'.$metadata->getValue().'</div>' : '';
+                $content = (null !== $metadata->getValue()) ? '<div class="chordpro-chorus-comment">'
+                    .$metadata->getValue().'</div>' : '';
                 return $content.'<div class="chordpro-chorus">';
                 break;
             case 'end_of_chorus':
@@ -59,28 +61,36 @@ class HtmlFormatter extends Formatter implements FormatterInterface {
 
     private function getLyricsHtml(Lyrics $lyrics)
     {
-        $verse .= '<div class="chordpro-verse">';
+        $verse = '<div class="chordpro-verse">';
         foreach ($lyrics->getBlocks() as $block) {
 
             $chords = [];
 
             $sliced_chords = (true === $this->french_chords) ? $block->getFrenchChord() : $block->getChord();
-            foreach ($sliced_chords as $sliced_chord) {
-                // Test if minor/major presence before slice chord with exposant part
-                if (strtolower(substr($sliced_chord[1],0,1)) == 'm') { // in first position (without alteration)
-                    $chords[] = $sliced_chord[0].substr($sliced_chord[1],0,1).'<sup>'.substr($sliced_chord[1],1).'</sup>';
-                }
-                else if (strtolower(substr($sliced_chord[1],1,1)) == 'm') { // in second position (with alteration)
-                    $chords[] = $sliced_chord[0].'<sup>'.substr($sliced_chord[1],0,1).'</sup>'.substr($sliced_chord[1],1,1).'<sup>'.substr($sliced_chord[1],2).'</sup>';
-                }
-                else {
-                    $chords[] = $sliced_chord[0].'<sup>'.substr($sliced_chord[1],0).'</sup>';
+            if (is_array($sliced_chords)) {
+                foreach ($sliced_chords as $sliced_chord) {
+                    // Test if minor/major presence before slice chord with exposant part
+                    if (strtolower(substr($sliced_chord[1],0,1)) == 'm') { // in first position (without alteration)
+                        $chords[] = $sliced_chord[0].substr($sliced_chord[1],0,1).'<sup>'.substr($sliced_chord[1],1)
+                            .'</sup>';
+                    }
+                    else if (strtolower(substr($sliced_chord[1],1,1)) == 'm') { // in second position (with alteration)
+                        $chords[] = $sliced_chord[0].'<sup>'.substr($sliced_chord[1],0,1).'</sup>'
+                            .substr($sliced_chord[1],1,1).'<sup>'.substr($sliced_chord[1],2).'</sup>';
+                    }
+                    else {
+                        $chords[] = $sliced_chord[0].'<sup>'.substr($sliced_chord[1],0).'</sup>';
+                    }
                 }
             }
 
             $chord = implode('/',$chords);
 
-            $chord = $this->blankChars(str_replace(['#','b','K'],[$this->sharp_symbol,$this->flat_symbol,$this->natural_symbol],$chord));
+            $chord = $this->blankChars(str_replace(
+                ['#','b','K'],
+                [$this->sharp_symbol,$this->flat_symbol,$this->natural_symbol],
+                $chord
+                ));
             $text = $this->blankChars($block->getText());
 
             $verse .= '<span class="chordpro-elem">
@@ -94,7 +104,7 @@ class HtmlFormatter extends Formatter implements FormatterInterface {
 
     private function getLyricsOnlyHtml(Lyrics $lyrics)
     {
-        $verse .= '<div class="chordpro-verse">';
+        $verse = '<div class="chordpro-verse">';
         foreach ($lyrics->getBlocks() as $block) {
             $verse .= ltrim($block->getText());
         }
