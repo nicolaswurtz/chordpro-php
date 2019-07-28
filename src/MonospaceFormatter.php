@@ -8,6 +8,7 @@ class MonospaceFormatter extends Formatter implements FormatterInterface {
     {
         $this->setOptions($song,$options);
 
+        $monospace = '';
         foreach ($song->lines as $line) {
             if (null === $line) {
                 $monospace .= "\n";
@@ -79,6 +80,7 @@ class MonospaceFormatter extends Formatter implements FormatterInterface {
 
     private function getLyricsOnlyMonospace(Lyrics $lyrics)
     {
+        $texts = '';
         foreach ($lyrics->getBlocks() as $block) {
             $texts .= ltrim($block->getText());
         }
