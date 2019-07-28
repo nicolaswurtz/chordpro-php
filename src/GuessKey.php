@@ -66,6 +66,7 @@ class GuessKey {
     public function guessKey($song)
     {
         // List all chords of a song
+        $chords = [];
         foreach ($song->lines as $line) {
             if (null !== $line and $line instanceof Lyrics) {
                 foreach ($line->getBlocks() as $block) {
@@ -80,9 +81,11 @@ class GuessKey {
         }
 
         // Order key by occurences in a scale
+        $list_keys = [];
         foreach ($this->scales as $key => $scale) {
+            $list_keys[$key] = 0;
             foreach ($chords as $chord) {
-                if (in_array($chord,$scale)) {
+                if (in_array($chord, $scale)) {
                     $list_keys[$key]++;
                 }
             }
