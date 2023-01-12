@@ -35,12 +35,15 @@ class Block {
     // getFrenchChord & getChord return an array (when with fundamental "/"), composed by an array with note, and alteration
     public function getFrenchChord()
     {
-        $chords = explode('/',$this->chord);
-        foreach ($chords as $chord) {
-            $result[] = [$this->french_chords[substr($chord,0,1)],substr($chord,1)];
+        if (null !== $this->chord) {
+            $chords = explode('/',$this->chord);
+            foreach ($chords as $chord) {
+                $result[] = [$this->french_chords[substr($chord,0,1)],substr($chord,1)];
+            }
+            return $result;
         }
-        return $result;
     }
+    
     public function getChord()
     {
         if (null !== $this->chord) {
