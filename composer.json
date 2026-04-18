@@ -3,7 +3,7 @@
     "description": "Parse, transpose and format (html,json,plaintext) ChordPro format for songs lyrics with chords.",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5 || ^12.0"
     },
     "autoload": {
         "psr-4": {
